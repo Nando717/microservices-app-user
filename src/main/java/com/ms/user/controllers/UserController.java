@@ -5,6 +5,8 @@ import com.ms.user.dto.UserRecordDto;
 import com.ms.user.models.UserModel;
 import com.ms.user.repository.UserRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,10 @@ public class UserController {
 
     public ResponseEntity<UserModel>saveUser(@RequestBody @Valid UserRecordDto userRecordDto){
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserRepository.save(UserModel));
+        var userModel = new UserModel();
+        BeanUtils.copyProperties(userRecordDto, userModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body();
     }
 
 }
