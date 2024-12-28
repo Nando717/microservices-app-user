@@ -14,6 +14,10 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/")
 
@@ -35,6 +39,25 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userModel));
     }
 
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserModel>>getall(UserRecordDto userRecordDto, UserModel userModel){
+
+       return ResponseEntity.status(HttpStatus.OK).body(userService.geti(userModel));
+    }
+
+
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Object>GetPorId(@PathVariable(value = "id")UUID id){
+        Optional<UserModel> useR = userService.getPorId(id);
+
+        if(useR.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuario não encontrado");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getPorId(id));
+    }
 
 
 
